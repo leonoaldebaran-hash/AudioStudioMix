@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Multipista</title>
+  <meta name="description" content="Gravador multipista simples no navegador: grave camadas e exporte a mix.">
+  <meta name="theme-color" content="#14161c">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="icon.svg" alt="" width="28" height="28">
+      <span>Multipista</span>
+    </div>
+
+    <div class="transport">
+      <button id="btnHome" class="tbtn" title="Voltar ao início (Home)" aria-label="Voltar ao início">⏮</button>
+      <button id="btnPlay" class="tbtn" title="Tocar / parar (Espaço)" aria-label="Tocar">▶</button>
+      <button id="btnRec" class="tbtn rec" title="Gravar nova pista (R)" aria-label="Gravar">●</button>
+      <div id="timer" class="timer">00:00.0</div>
+    </div>
+
+    <div class="tempo">
+      <label class="bpm">BPM <input id="bpm" type="number" min="30" max="300" value="100"></label>
+      <button id="btnMetro" class="chip" aria-pressed="false" title="Metrônomo durante a reprodução e gravação">Metrônomo</button>
+      <button id="btnCount" class="chip" aria-pressed="true" title="Contar 4 tempos antes de gravar">Contagem</button>
+    </div>
+
+    <div class="menu">
+      <label class="chip file" title="Importar um arquivo de áudio como pista (ex.: um beat)">
+        Importar<input id="fileImport" type="file" accept="audio/*" hidden>
+      </label>
+      <button id="btnExport" class="chip primary" title="Juntar todas as pistas em um WAV">Exportar mix</button>
+      <button id="btnSettings" class="chip icon" title="Configurações" aria-label="Configurações">⚙</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="status" class="status" role="status"></div>
+    <section id="tracks" class="tracks"></section>
+
+    <div id="empty" class="empty">
+      <h2>Comece sua música</h2>
+      <p>Aperte <strong>●</strong> para gravar a primeira pista. Depois grave as próximas por cima: as pistas já gravadas tocam enquanto você grava.</p>
+      <p class="hint">🎧 Use fones de ouvido, senão o som das pistas antigas vaza para o microfone.</p>
+    </div>
+  </main>
+
+  <dialog id="settings">
+    <form method="dialog" class="settings">
+      <h2>Configurações</h2>
+
+      <label>Entrada de áudio
+        <select id="inputDevice"><option value="">Padrão do sistema</option></select>
+      </label>
+
+      <label>Canal da entrada
+        <select id="inputChannel">
+          <option value="mix">Mono (mistura L+R)</option>
+          <option value="left">Esquerdo / Entrada 1</option>
+          <option value="right">Direito / Entrada 2</option>
+        </select>
+      </label>
+
+      <label>Compensação de latência
+        <span class="sub">Automática detectada: <b id="latAuto">—</b> ms. Ajuste fino abaixo se a pista nova ficar adiantada ou atrasada.</span>
+        <div class="range-row">
+          <input id="latAdjust" type="range" min="-200" max="300" step="1" value="0">
+          <output id="latAdjustOut">0 ms</output>
+        </div>
+        <span class="sub">Total aplicado: <b id="latTotal">—</b> ms. Valores maiores puxam a gravação para mais cedo.</span>
+      </label>
+
+      <label class="check"><input id="monitor" type="checkbox"> Ouvir o microfone enquanto grava (só com fone)</label>
+
+      <div class="settings-actions">
+        <button type="button" id="btnNew" class="chip danger">Novo projeto (apagar tudo)</button>
+        <button value="close" class="chip primary">Fechar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="trackTpl">
+    <div class="track">
+      <div class="controls">
+        <div class="row1">
+          <span class="swatch"></span>
+          <input class="name" type="text" spellcheck="false" aria-label="Nome da pista">
+          <button class="mini mute" title="Mudo">M</button>
+          <button class="mini solo" title="Solo">S</button>
+          <button class="mini more" title="Mais opções" aria-label="Mais opções">⋯</button>
+        </div>
+        <div class="row2">
+          <label title="Volume">Vol <input class="vol" type="range" min="0" max="1.5" step="0.01"></label>
+          <label title="Pan (esquerda/direita)">Pan <input class="pan" type="range" min="-1" max="1" step="0.01"></label>
+        </div>
+        <div class="extra" hidden>
+          <span>Deslocar:</span>
+          <button class="mini nudge" data-ms="-10">−10ms</button>
+          <button class="mini nudge" data-ms="10">+10ms</button>
+          <button class="mini download">Baixar WAV</button>
+          <button class="mini delete">Excluir</button>
+        </div>
+      </div>
+      <div class="lane">
+        <canvas></canvas>
+        <div class="ph"></div>
+      </div>
+    </div>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

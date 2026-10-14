@@ -1,0 +1,13 @@
+{
+  "name": "Multipista",
+  "short_name": "Multipista",
+  "description": "Gravador multipista simples: grave camadas e exporte a mix.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#14161c",
+  "theme_color": "#14161c",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
