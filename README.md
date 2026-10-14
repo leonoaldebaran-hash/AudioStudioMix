@@ -34,7 +34,7 @@ Tudo fica salvo **no próprio navegador** (IndexedDB), no aparelho que você uso
 
 1. No repositório: **Settings → Pages**.
 2. Em *Source*, escolha **Deploy from a branch**, branch `main`, pasta `/ (root)`, e salve.
-3. Em 1 ou 2 minutos o site estará em `https://leonoaldebaran-hash.github.io/audiostudiomix/`.
+3. Em 1 ou 2 minutos o site estará em `https://leonoaldebaran-hash.github.io/AudioStudioMix/`.
 
 No celular, abra esse endereço e use "Adicionar à tela inicial" para usar como app.
 
